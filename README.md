@@ -1,4 +1,4 @@
-# SOEN 342 Project Team 21
+## SOEN 342 Project Team 21
 ## Team Information
 ### Course: SOEN 342-GG: Software Requirements and Specifications
 ### Instructor: Dr. Constantinos Constantinides, P.Eng.
