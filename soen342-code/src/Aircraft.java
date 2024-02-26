@@ -11,6 +11,14 @@ public class Aircraft {
         this.airline = airline;
     }
 
+    @Override
+    public String toString() {
+        return "Aircraft{" +
+                "name='" + name + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
     public String getName() {
         return name;
     }

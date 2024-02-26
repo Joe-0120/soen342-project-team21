@@ -8,6 +8,13 @@ public class Airline {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "Airline{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+
     public String getName() {
         return name;
     }

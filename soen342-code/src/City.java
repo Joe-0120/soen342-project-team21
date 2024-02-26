@@ -12,6 +12,9 @@ public class City {
         this.temperature = temperature;
     }
 
+    public String toString(){
+        return name + ", " + country + ", " + temperature + "°C";
+    }
     public String getName() {
         return name;
     }

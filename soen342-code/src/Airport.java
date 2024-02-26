@@ -15,6 +15,15 @@ public class Airport {
         this.city = city;
     }
 
+    @Override
+    public String toString() {
+        return "Airport{" +
+                "name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", city=" + city +
+                '}';
+    }
+
     public String getName() {
         return name;
     }
