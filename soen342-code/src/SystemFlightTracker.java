@@ -52,7 +52,15 @@ public class SystemFlightTracker {
         this.airlineCatalog = airlineCatalog;
     }
 
-    public void viewFlights(Airport source, Airport destination){
+    public void viewFlights(String sourceCode, String destinationCode){
+        Airport source = airportCatalog.getAirport(sourceCode);
+        if (source == null){
+            System.out.println("No airport with code " + sourceCode + " was found.");
+        }
+        Airport destination = airportCatalog.getAirport(destinationCode);
+        if (destination == null){
+            System.out.println("No airport with code " + destinationCode + " was found.");
+        }
         String type = user.getUserType();
         Airport airport = null;
         if (type.equals("airportAdmin")){

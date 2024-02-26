@@ -13,4 +13,13 @@ public class AirportCatalog {
     public void setAirports(ArrayList<Airport> airports) {
         this.airports = airports;
     }
+
+    public Airport getAirport(String code) {
+        for (Airport airport : airports) {
+            if (airport.getCode().equals(code)) {
+                return airport;
+            }
+        }
+        return null; // If airport with the given code is not found
+    }
 }
