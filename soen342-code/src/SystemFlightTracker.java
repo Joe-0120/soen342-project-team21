@@ -52,7 +52,7 @@ public class SystemFlightTracker {
         this.airlineCatalog = airlineCatalog;
     }
 
-    public void viewFlights(Airport source, Airport destination, User user){
+    public void viewFlights(Airport source, Airport destination){
         String type = user.getUserType();
         Airport airport = null;
         if (type.equals("airportAdmin")){
