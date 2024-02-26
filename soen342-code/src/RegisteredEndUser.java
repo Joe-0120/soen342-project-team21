@@ -1,2 +1,2 @@
-package PACKAGE_NAME;public class RegisteredEndUser {
+public class RegisteredEndUser {
 }
