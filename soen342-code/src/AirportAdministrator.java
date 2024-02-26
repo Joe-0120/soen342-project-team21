@@ -1,2 +1,2 @@
-public class AirportAdministrator {
+public class AirportAdministrator extends RegisteredUser{
 }

@@ -1,2 +1,2 @@
-public class RegisteredUser {
+public abstract class RegisteredUser extends User{
 }

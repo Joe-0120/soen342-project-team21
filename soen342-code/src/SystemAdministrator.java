@@ -1,2 +1,3 @@
-public class SystemAdministrator {
+public class SystemAdministrator extends RegisteredUser{
+
 }

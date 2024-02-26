@@ -1,2 +1,2 @@
-public class RegisteredEndUser {
+public class RegisteredEndUser extends RegisteredUser {
 }
