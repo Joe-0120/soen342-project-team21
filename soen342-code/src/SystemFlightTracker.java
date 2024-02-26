@@ -1,5 +1,5 @@
 
-public class SystemClass {
+public class SystemFlightTracker {
     public static void main(String[] args) {
 
     }
