@@ -13,7 +13,7 @@ The system allows different types of clients to track and modify flight informat
 - GitHub setup
 ## Iteration 2:
 - Use Case 1: View flights, given a source-destination pair.
-## Iteration 2:
+## Iteration 3:
 - Use Case 2: Register a flight into the flights database.
 ## Iteration 4:
 - Use Case 3: Providing persistence
