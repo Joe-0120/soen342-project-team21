@@ -1,9 +1,9 @@
 public class AirlineAdministrator extends RegisteredUser{
     private Airline airline;
 
-    public AirlineAdministrator(String username, String password, int id, Airport airport){
+    public AirlineAdministrator(String username, String password, int id, Airline airline){
         super(username, password, id);
-        this.airport = airport;
+        this.airline = airline;
     }
 
     public Airline getAirline() {
