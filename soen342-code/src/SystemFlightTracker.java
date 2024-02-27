@@ -96,7 +96,7 @@ public class SystemFlightTracker {
     public static void printFullInformation(ArrayList<Flight> flights){
         for (Flight flight: flights){
             System.out.println("-----------------------------------------------------------");
-            System.out.println("Basic flight information for flight: " + flight.getNumber());
+            System.out.println("Full flight information for flight: " + flight.getNumber());
             System.out.println("Source: " + flight.getSource());
             System.out.println("Destination: " + flight.getDestination());
             System.out.println("Scheduled departure time: " + flight.getScheduledDep());
