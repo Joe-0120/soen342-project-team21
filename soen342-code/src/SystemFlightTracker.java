@@ -53,7 +53,7 @@ public class SystemFlightTracker {
         this.airlineCatalog = airlineCatalog;
     }
 
-    public void viewFlights(String sourceCode, String destinationCode){
+    public static void viewFlights(String sourceCode, String destinationCode){
         Airport source = airportCatalog.getAirport(sourceCode);
         if (source == null){
             System.out.println("No airport with code " + sourceCode + " was found.");
@@ -84,7 +84,7 @@ public class SystemFlightTracker {
             printBasicInformation(flights);
         }
     }
-    public void printFullInformation(ArrayList<Flight> flights){
+    public static void printFullInformation(ArrayList<Flight> flights){
         for (Flight flight: flights){
             System.out.println("-----------------------------------------------------------");
             System.out.println("Basic flight information for flight: " + flight.getNumber());
@@ -92,7 +92,7 @@ public class SystemFlightTracker {
             System.out.println("Destination: " + flight.getDestination());
         }
     }
-    public void printBasicInformation(ArrayList<Flight> flights){
+    public static void printBasicInformation(ArrayList<Flight> flights){
         for (Flight flight: flights){
             System.out.println("-----------------------------------------------------------");
             System.out.println("Basic flight information for flight: " + flight.getNumber());
@@ -161,51 +161,63 @@ public class SystemFlightTracker {
     }
 
     public static void main(String[] args) {
-        loadData();
-        System.out.println("-----------------------------------------------------------");
-        System.out.println(" ----------------         Welcome         ----------------");
-        System.out.println("-----------------------------------------------------------");
-        
-        System.out.println("Please select your user type:");
-        System.out.println("1. Non-Registered User");
-        System.out.println("2. Registered User");
-        System.out.println("3. Airline Administrator");
-        System.out.println("4. Airport Administrator");
-        System.out.println("5. System Administrator");
-        
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your choice (1-5): ");
-        
-        int userType = scanner.nextInt();
-        
-        switch (userType) {
-          case 1:
-            System.out.println("Non-Registered User Selected.");
-            user = new NonRegisteredEndUser(1);
-            break;
-          case 2:
-            System.out.println("Registered User Selected.");
-            user = new RegisteredEndUser("username", "password", 1);
-            break;
-          case 3:
-            System.out.println("Airline Administrator Selected.");
-            user = new AirlineAdministrator("username", "password", 1, airlineCatalog.getAirlines().get(0));
-            break;
-          case 4:
-            System.out.println("Airport Administrator Selected.");
-            user = new AirportAdministrator("username", "password", 1, airportCatalog.getAirports().get(0));
-            break;
-          case 5:
-            System.out.println("System Administrator Selected.");
-            user = new SystemAdministrator("username", "password", 1);
-            break;
-          default:
-            System.out.println("Invalid choice. Please enter a number between 1 and 5.");
-            break;
-        }
-        scanner.close();
-      // Start Loop
-      // View Flights
-      // End Loop
-    }
+      loadData();
+      System.out.println("-----------------------------------------------------------");
+      System.out.println(" ----------------         Welcome         ----------------");
+      System.out.println("-----------------------------------------------------------");
+  
+      Scanner scanner = new Scanner(System.in);
+  
+      System.out.println("Please select your user type:");
+      System.out.println("1. Non-Registered User");
+      System.out.println("2. Registered User");
+      System.out.println("3. Airline Administrator");
+      System.out.println("4. Airport Administrator");
+      System.out.println("5. System Administrator");
+  
+      System.out.print("Enter your choice (1-5): ");
+  
+      int userType = scanner.nextInt();
+      scanner.nextLine(); // Consume the newline left-over
+  
+      switch (userType) {
+        case 1:
+          System.out.println("Non-Registered User Selected.");
+          user = new NonRegisteredEndUser(1);
+          break;
+        case 2:
+          System.out.println("Registered User Selected.");
+          user = new RegisteredEndUser("username", "password", 1);
+          break;
+        case 3:
+          System.out.println("Airline Administrator Selected.");
+          user = new AirlineAdministrator("username", "password", 1, airlineCatalog.getAirlines().get(0));
+          break;
+        case 4:
+          System.out.println("Airport Administrator Selected.");
+          user = new AirportAdministrator("username", "password", 1, airportCatalog.getAirports().get(0));
+          break;
+        case 5:
+          System.out.println("System Administrator Selected.");
+          user = new SystemAdministrator("username", "password", 1);
+          break;
+        default:
+          System.out.println("Invalid choice. Please enter a number between 1 and 5.");
+          return; // Exit if the input is not valid
+      }
+  
+      // Ask for source and destination airport codes
+      System.out.print("Enter source airport code: ");
+      String sourceCode = scanner.nextLine();
+  
+      System.out.print("Enter destination airport code: ");
+      String destinationCode = scanner.nextLine();
+  
+      // Create an instance of the SystemFlightTracker to call viewFlights
+      // SystemFlightTracker tracker = new SystemFlightTracker();
+      viewFlights(sourceCode, destinationCode);
+
+      // scanner.close();
+  }
+  
 }
