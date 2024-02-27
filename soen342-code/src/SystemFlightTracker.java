@@ -157,7 +157,6 @@ public class SystemFlightTracker {
       airports.add(charlesDeGaulle);
       airports.add(sydneyAirport);
       airports.add(cairoAirport);
-
       systemAdministrators.add(new SystemAdministrator("John", "Doe", 0));
 
       flightCatalog = new FlightCatalog();
@@ -169,6 +168,7 @@ public class SystemFlightTracker {
       flights.add(new Commercial("SF505", narita, cairoAirport, LocalDateTime.of(2024, 7, 15, 21, 0), LocalDateTime.of(2024, 7, 15, 21, 15), LocalDateTime.of(2024, 7, 16, 5, 0), LocalDateTime.of(2024, 7, 16, 5, 25), skylineFlights, skylineFleet.get(0)));
 
       flightCatalog.setFlights(flights);
+      airportCatalog.setAirports(airports);
     }
 
     public static void main(String[] args) {
