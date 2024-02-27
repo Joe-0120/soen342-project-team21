@@ -1,6 +1,6 @@
 import java.time.LocalDateTime;
 
-public class NonPrivateFlight extends Flight {
+public abstract class NonPrivateFlight extends Flight {
   
   public NonPrivateFlight(
     String number,

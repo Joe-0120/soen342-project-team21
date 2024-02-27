@@ -12,6 +12,10 @@ public class FlightCatalog {
       flights.add(flight);
     }
 
+    public void setFlights(ArrayList<Flight> flights) {
+      this.flights = flights;
+  }
+
     public boolean removeFlight(String number) {
       return flights.removeIf(flight -> flight.getNumber().equals(number));
     }
