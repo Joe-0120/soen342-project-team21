@@ -1,18 +1,36 @@
 import java.time.LocalDateTime;
 
-public class Flight {
+public abstract class Flight {
   private String number;
+  private Airport source;
+  private Airport destination;
   private LocalDateTime scheduledDep;
   private LocalDateTime actualDep;
   private LocalDateTime scheduledArr;
   private LocalDateTime estimatedArr;
+  private Airline airline;
+  private Aircraft aircraft;
 
-  public Flight(String number, LocalDateTime scheduledDep, LocalDateTime actualDep, LocalDateTime scheduledArr, LocalDateTime estimatedArr) {
+  public Flight(
+    String number,
+    Airport source,
+    Airport destination,
+    LocalDateTime scheduledDep,
+    LocalDateTime actualDep,
+    LocalDateTime scheduledArr,
+    LocalDateTime estimatedArr,
+    Airline airline,
+    Aircraft aircraft
+  ) {
     this.number = number;
+    this.source = source;
+    this.destination = destination;
     this.scheduledDep = scheduledDep;
     this.actualDep = actualDep;
     this.scheduledArr = scheduledArr;
     this.estimatedArr = estimatedArr;
+    this.airline = airline;
+    this.aircraft = aircraft;
   }
 
   public String getNumber() {
@@ -21,6 +39,22 @@ public class Flight {
 
   public void setNumber(String number) {
     this.number = number;
+  }
+
+  public Airport getSource() {
+    return source;
+  }
+
+  public void setSource(Airport source) {
+    this.source = source;
+  }
+
+  public Airport getDestination() {
+    return destination;
+  }
+
+  public void setDestination(Airport destination) {
+    this.destination = destination;
   }
 
   public LocalDateTime getScheduledDep() {
@@ -53,5 +87,21 @@ public class Flight {
 
   public void setEstimatedArr(LocalDateTime estimatedArr) {
     this.estimatedArr = estimatedArr;
+  }
+
+  public Airline getAirline() {
+    return airline;
+  }
+
+  public void setAirline(Airline airline) {
+    this.airline = airline;
+  }
+
+  public Aircraft getAircraft() {
+    return aircraft;
+  }
+
+  public void setAircraft(Aircraft aircraft) {
+    this.aircraft = aircraft;
   }
 }
