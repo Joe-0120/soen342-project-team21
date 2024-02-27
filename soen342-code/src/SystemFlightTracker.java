@@ -85,7 +85,7 @@ public class SystemFlightTracker {
             printBasicInformation(flights);
         }
     }
-    public static void printFullInformation(ArrayList<Flight> flights){
+    public static void printBasicInformation(ArrayList<Flight> flights){
         for (Flight flight: flights){
             System.out.println("-----------------------------------------------------------");
             System.out.println("Basic flight information for flight: " + flight.getNumber());
@@ -93,7 +93,7 @@ public class SystemFlightTracker {
             System.out.println("Destination: " + flight.getDestination());
         }
     }
-    public static void printBasicInformation(ArrayList<Flight> flights){
+    public static void printFullInformation(ArrayList<Flight> flights){
         for (Flight flight: flights){
             System.out.println("-----------------------------------------------------------");
             System.out.println("Basic flight information for flight: " + flight.getNumber());
@@ -214,7 +214,7 @@ public class SystemFlightTracker {
           break;
         default:
           System.out.println("Invalid choice. Please enter a number between 1 and 5.");
-          return; // Exit if the input is not valid
+          return;
       }
   
       // Ask for source and destination airport codes
