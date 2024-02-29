@@ -35,7 +35,7 @@ public class FlightCatalog {
     
     public List<Flight> getFlights(Airport airport, Airport source, Airport destination) {
       return flights.stream()
-        .filter(flight -> (flight.getSource().equals(airport)) &&
+        .filter(flight -> (flight.getSource().equals(airport) || flight.getDestination().equals(airport)) &&
           flight.getSource().equals(source) && flight.getDestination().equals(destination))
         .collect(Collectors.toList());
     }
