@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,4 +46,8 @@ public class FlightCatalog {
         .filter(flight -> flight.getSource().equals(source) && flight.getDestination().equals(destination))
         .collect(Collectors.toList());
     }
+
+    public boolean checkDepUnique(Airport source, LocalDateTime scheduledDep){}
+
+    public boolean checkArrUnique(Airport destination, LocalDateTime scheduledArr){}
 }
