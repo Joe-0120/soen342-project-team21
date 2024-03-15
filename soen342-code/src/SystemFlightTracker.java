@@ -206,7 +206,7 @@ public class SystemFlightTracker {
           break;
         case 4:
           System.out.println("Airport Administrator Selected.");
-          user = new AirportAdministrator("username", "password", 1, airportCatalog.getAirports().get(0));
+          user = new AirportAdministrator("username", "password", 1, airportCatalog.getAirports().get(1));
           break;
         case 5:
           System.out.println("System Administrator Selected.");
