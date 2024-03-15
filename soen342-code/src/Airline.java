@@ -31,4 +31,8 @@ public class Airline {
         this.fleet = fleet;
     }
 
+    public Aircraft getAircraft(Airport source){
+
+    }
+
 }
