@@ -32,6 +32,13 @@ public class Airline {
     }
 
     public Aircraft getAircraft(Airport source){
+        for (Aircraft aircraft : fleet) {
+            if ((aircraft.getStatus().equals(source.getCode()))) {
+                return aircraft;
+            }
+        }
+
+        return null;
 
     }
 
