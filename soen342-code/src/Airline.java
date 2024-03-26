@@ -30,4 +30,16 @@ public class Airline {
     public void setFleet(ArrayList<Aircraft> fleet) {
         this.fleet = fleet;
     }
+
+    public Aircraft getAircraft(Airport source){
+        for (Aircraft aircraft : fleet) {
+            if ((aircraft.getStatus().equals(source.getCode()))) {
+                return aircraft;
+            }
+        }
+
+        return null;
+
+    }
+
 }
