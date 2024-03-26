@@ -175,7 +175,7 @@ public class SystemFlightTracker {
             System.out.println("Error: Departure time taken by other flight at the source airport.");
             return;
         }
-        if (!flightCatalog.checkDepUnique(destination, scheduledArr)){
+        if (!flightCatalog.checkArrUnique(destination, scheduledArr)){
             System.out.println("Error: Arrival time taken by other flight at the destination airport");
             return;
         }
