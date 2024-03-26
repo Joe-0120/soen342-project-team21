@@ -9,6 +9,7 @@ public class SystemFlightTracker {
     private static AirportCatalog airportCatalog;
     private static FlightCatalog flightCatalog;
     private static AirlineCatalog airlineCatalog;
+    private static CityCatalog cityCatalog;
 
     public SystemFlightTracker() {
 
@@ -52,6 +53,14 @@ public class SystemFlightTracker {
 
     public void setAirlineCatalog(AirlineCatalog airlineCatalog) {
         this.airlineCatalog = airlineCatalog;
+    }
+
+    public static CityCatalog getCityCatalog() {
+        return cityCatalog;
+    }
+
+    public static void setCityCatalog(CityCatalog cityCatalog) {
+        SystemFlightTracker.cityCatalog = cityCatalog;
     }
 
     public static void viewFlights(String sourceCode, String destinationCode) {
@@ -139,11 +148,19 @@ public class SystemFlightTracker {
         airportCatalog = new AirportCatalog();
         ArrayList<Airport> airports = new ArrayList<>();
 
+        cityCatalog = new CityCatalog();
+        ArrayList<City> cities = new ArrayList<>();
         City newYork = new City("New York", "USA", 16.0);
         City tokyo = new City("Tokyo", "Japan", 20.0);
         City paris = new City("Paris", "France", 18.0);
         City sydney = new City("Sydney", "Australia", 22.0);
         City cairo = new City("Cairo", "Egypt", 30.0);
+        cities.add(newYork);
+        cities.add(tokyo);
+        cities.add(paris);
+        cities.add(sydney);
+        cities.add(cairo);
+        cityCatalog.setCities(cities);
 
         Airport jfk = new Airport("John F. Kennedy International Airport", "JFK", newYork);
         Airport narita = new Airport("Narita International Airport", "NRT", tokyo);
@@ -193,6 +210,16 @@ public class SystemFlightTracker {
             System.out.println(confirmation);
         }
 
+    }
+
+    public static void addAirport(String name, String code, String cityName){
+        City city = cityCatalog.getCity(cityName);
+        if (city == null){
+            System.out.println("Error: City does not exist");
+        }
+        else {
+            airportCatalog.addAirport(name, code, city);
+        }
     }
     public static LocalDateTime getTimeUser(Scanner scanner) {
 
@@ -270,6 +297,7 @@ public class SystemFlightTracker {
 
         viewFlights(sourceCode, destinationCode);
 
+        // Driver code for registerFlight
         if (user.getUserType().equals("airportAdmin") || user.getUserType().equals("airlineAdmin")){
             String ans;
             System.out.print("Would you like to add a flight? (y/n): ");
@@ -296,6 +324,25 @@ public class SystemFlightTracker {
                 }
                 registerFlight(number, sourceAirport, destinationAirport, depTime, arrTime, airline);
 
+            }
+        }
+
+        // Driver Code for addAirport
+        if (user.getUserType().equals("systemAdmin")){
+            System.out.print("Would you like to add an airport? (y/n): ");
+            String ans;
+            do {
+                ans = scanner.nextLine();
+                ans = ans.toLowerCase();
+            } while (!ans.equals("y") && !ans.equals("n"));
+            if (ans.equals("y")){
+                System.out.print("Enter the name of the airport: ");
+                String airportName = scanner.nextLine();
+                System.out.print("Enter airport code: ");
+                String airportCode = scanner.nextLine();
+                System.out.print("Enter city name: ");
+                String cityName = scanner.nextLine();
+                addAirport(airportName, airportCode, cityName);
             }
         }
 

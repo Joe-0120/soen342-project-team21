@@ -12,7 +12,7 @@ public class CityCatalog {
         this.cities = cities;
     }
 
-    public City getAirport(String cityName) {
+    public City getCity(String cityName) {
         for (City city : cities) {
             if (city.getName().equals(cityName)) {
                 return city;
