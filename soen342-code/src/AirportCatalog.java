@@ -22,4 +22,11 @@ public class AirportCatalog {
         }
         return null; // If airport with the given code is not found
     }
+
+    public String addAirport(String name, String code, City city){
+        Airport newAirport = new Airport(name, code, city);
+        airports.add(newAirport);
+        System.out.println(airports);
+        return "Added Airport Successfully";
+    }
 }
