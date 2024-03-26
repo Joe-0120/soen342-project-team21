@@ -55,4 +55,22 @@ public class FlightCatalog {
         .filter(flight -> flight.getSource().equals(source) && flight.getDestination().equals(destination))
         .collect(Collectors.toList());
     }
-}
+
+    public boolean checkDepUnique(Airport source, LocalDateTime scheduledDep) {
+        for (Flight flight : flights) {
+            if ((flight.getSource().equals(source)) && (flight.getScheduledDep().equals(scheduledDep))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+        public boolean checkArrUnique (Airport destination, LocalDateTime scheduledArr){
+            for (Flight flight : flights) {
+                if ((flight.getDestination().equals(destination)) && (flight.getScheduledArr().equals(scheduledArr))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
