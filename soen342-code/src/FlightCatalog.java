@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,8 +9,17 @@ public class FlightCatalog {
     public FlightCatalog() {
     }
 
-    public void addFlight(Flight flight) {
-      flights.add(flight);
+    // Normal Flight
+    public void addFlight(String flightNumber, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr, Airline airline) {
+      System.out.println("Adding Flight: " + flightNumber);
+      // Add switch for Commercial or Cargo
+      flights.add(new Commercial(flightNumber, source, destination, scheduledDep, null, scheduledArr, null, null, null));
+    }
+
+    // Private flight
+    public void addFlight(String flightNumber, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr) {
+      System.out.println("Adding Flight: " + flightNumber);
+      flights.add(new PrivateFlight(flightNumber, source, destination, scheduledDep, null, scheduledArr, null, null, null));
     }
 
     public void setFlights(ArrayList<Flight> flights) {
