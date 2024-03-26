@@ -118,15 +118,15 @@ public class SystemFlightTracker {
         ArrayList<Aircraft> oceanicFleet = new ArrayList<>();
 
         // Create Aircraft and assign to airlines
-        globalFleet.add(new Aircraft("Glider One", "Active", "A1", globalAirways));
-        globalFleet.add(new Aircraft("Sky Cruiser", "Active", "A2", globalAirways));
+        globalFleet.add(new Aircraft("Glider One", "JFK", "A1", globalAirways));
+        globalFleet.add(new Aircraft("Sky Cruiser", "JFK", "A2", globalAirways));
         globalAirways.setFleet(globalFleet);
 
         skylineFleet.add(new Aircraft("Jet Streamer", "Maintenance", "S1", skylineFlights));
-        skylineFleet.add(new Aircraft("Cloud Hopper", "Active", "S2", skylineFlights));
+        skylineFleet.add(new Aircraft("Cloud Hopper", "SYD", "S2", skylineFlights));
         skylineFlights.setFleet(skylineFleet);
 
-        oceanicFleet.add(new Aircraft("Sea Breeze", "Active", "O1", oceanicAirlines));
+        oceanicFleet.add(new Aircraft("Sea Breeze", "NRT", "O1", oceanicAirlines));
         oceanicAirlines.setFleet(oceanicFleet);
 
         airlineCatalog = new AirlineCatalog();
@@ -274,7 +274,7 @@ public class SystemFlightTracker {
             String ans;
             System.out.print("Would you like to add a flight? (y/n): ");
             do {
-                ans = scanner.next();
+                ans = scanner.nextLine();
                 ans = ans.toLowerCase();
             } while (!ans.equals("y") && !ans.equals("n"));
             if (ans.equals("y")){
@@ -286,9 +286,9 @@ public class SystemFlightTracker {
                 System.out.print("Enter destination airport code: ");
                 String destinationCode2 = scanner.nextLine();
                 Airport destinationAirport = airportCatalog.getAirport(destinationCode2);
-                System.out.println("Enter the information for the time of departure:");
+                System.out.println("Enter the information for the time of departure ~");
                 LocalDateTime depTime = getTimeUser(scanner);
-                System.out.println("Enter the information for the time of arrival:");
+                System.out.println("Enter the information for the time of arrival ~");
                 LocalDateTime arrTime = getTimeUser(scanner);
                 Airline airline = null;
                 if (user.getUserType().equals("airlineAdmin")){
