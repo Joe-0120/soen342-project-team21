@@ -2,6 +2,11 @@ import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class SystemFlightTracker {
     private static User user;
@@ -243,6 +248,30 @@ public class SystemFlightTracker {
     }
 
     public static void main(String[] args) {
+      System.out.println("Working Directory = " + System.getProperty("user.dir"));
+
+       // Path to the SQLite database file
+       String url = "jdbc:sqlite:FlightTracker.db";
+
+       // Connect to the database
+       try (Connection conn = DriverManager.getConnection(url)) {
+           System.out.println("Connection to SQLite has been established.");
+
+           // Create a statement object to perform a query
+           try (Statement stmt = conn.createStatement()) {
+               // Example query
+               ResultSet rs = stmt.executeQuery("SELECT * FROM City");
+
+               // Iterate over the result set
+               while (rs.next()) {
+                   // Replace 'columnName' with your actual column names
+                   System.out.println(rs.getString("name"));
+               }
+           }
+       } catch (SQLException e) {
+           System.out.println(e.getMessage());
+       }
+
         loadData();
         System.out.println("-----------------------------------------------------------");
         System.out.println(" ----------------         Welcome         ----------------");
