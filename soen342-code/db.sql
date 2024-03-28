@@ -31,13 +31,15 @@ CREATE TABLE IF NOT EXISTS Flight (
     actualDep DATETIME,
     scheduledArr DATETIME,
     estimatedArr DATETIME,
-    aircraftStatus VARCHAR(255),
-    aircraftName VARCHAR(255),
+    type VARCHAR(255),
     airline_id INT NOT NULL,
+    aircraft_id INTEGER,
     FOREIGN KEY (source) REFERENCES Airport(airport_id),
     FOREIGN KEY (destination) REFERENCES Airport(airport_id),
-    FOREIGN KEY (airline_id) REFERENCES Airline(airline_id)
+    FOREIGN KEY (airline_id) REFERENCES Airline(airline_id),
+    FOREIGN KEY (aircraft_id) REFERENCES Aircraft(aircraft_id)
 );
+
 
 -- Create the 'Aircraft' table
 CREATE TABLE IF NOT EXISTS Aircraft (
