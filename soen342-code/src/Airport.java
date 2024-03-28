@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public class Airport {
+    private int id;
     private String name;
     private String code;
     private City city;
@@ -9,10 +10,16 @@ public class Airport {
     private ArrayList<Flight> destinationFlights = new ArrayList<Flight>();
     private ArrayList<Flight> handledPrivateFlights = new ArrayList<Flight>();
 
-    public Airport(String name, String code, City city) {
+    public Airport(int id, String name, String code, City city) {
+        this.id = id;
         this.name = name;
         this.code = code;
         this.city = city;
+    }
+    public Airport(int id, String name, String code) {
+        this.id = id;
+        this.name = name;
+        this.code = code;
     }
 
     @Override
@@ -22,6 +29,14 @@ public class Airport {
                 ", code='" + code + '\'' +
                 ", city=" + city +
                 '}';
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

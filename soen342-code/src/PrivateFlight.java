@@ -2,6 +2,7 @@ import java.time.LocalDateTime;
 
 public class PrivateFlight extends Flight {
   public PrivateFlight(
+          int id,
     String number,
     Airport source,
     Airport destination,
@@ -12,6 +13,6 @@ public class PrivateFlight extends Flight {
     Airline airline,
     Aircraft aircraft
   ) {
-    super(number, source, destination, scheduledDep, actualDep, scheduledArr, estimatedArr, airline, aircraft);
+    super(id, number, source, destination, scheduledDep, actualDep, scheduledArr, estimatedArr, airline, aircraft);
   }
 }
