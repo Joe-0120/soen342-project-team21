@@ -337,11 +337,11 @@ public class SystemFlightTracker {
 //
 //        flightCatalog = new FlightCatalog();
 //        ArrayList<Flight> flights = new ArrayList<>();
-//        flights.add(new Commercial("GA101", jfk, narita, LocalDateTime.of(2024, 3, 14, 10, 0), LocalDateTime.of(2024, 3, 14, 10, 15), LocalDateTime.of(2024, 3, 15, 12, 0), LocalDateTime.of(2024, 3, 15, 12, 20), globalAirways, globalFleet.get(0)));
-//        flights.add(new Commercial("SF202", charlesDeGaulle, sydneyAirport, LocalDateTime.of(2024, 4, 20, 9, 0), LocalDateTime.of(2024, 4, 20, 9, 30), LocalDateTime.of(2024, 4, 21, 22, 0), LocalDateTime.of(2024, 4, 21, 22, 45), skylineFlights, skylineFleet.get(1)));
-//        flights.add(new Cargo("OA303", cairoAirport, jfk, LocalDateTime.of(2024, 5, 5, 18, 0), LocalDateTime.of(2024, 5, 5, 18, 20), LocalDateTime.of(2024, 5, 6, 3, 0), LocalDateTime.of(2024, 5, 6, 3, 30), oceanicAirlines, oceanicFleet.get(0)));
-//        flights.add(new Cargo("GA404", sydneyAirport, charlesDeGaulle, LocalDateTime.of(2024, 6, 10, 13, 0), LocalDateTime.of(2024, 6, 10, 13, 10), LocalDateTime.of(2024, 6, 11, 7, 0), LocalDateTime.of(2024, 6, 11, 7, 15), globalAirways, globalFleet.get(1)));
-//        flights.add(new PrivateFlight("SF505", narita, cairoAirport, LocalDateTime.of(2024, 7, 15, 21, 0), LocalDateTime.of(2024, 7, 15, 21, 15), LocalDateTime.of(2024, 7, 16, 5, 0), LocalDateTime.of(2024, 7, 16, 5, 25), skylineFlights, skylineFleet.get(0)));
+//        flights.add(new Commercial("GA101", jfk, narita, LocalDateTime.of(2024, 3, 14, 10, 0), LocalDateTime.of(2024, 3, 14, 10, 15), LocalDateTime.of(2024, 3, 15, 12, 0), LocalDateTime.of(2024, 3, 15, 12, 20), globalAirways, globalFleet.get(0)));1
+//        flights.add(new Commercial("SF202", charlesDeGaulle, sydneyAirport, LocalDateTime.of(2024, 4, 20, 9, 0), LocalDateTime.of(2024, 4, 20, 9, 30), LocalDateTime.of(2024, 4, 21, 22, 0), LocalDateTime.of(2024, 4, 21, 22, 45), skylineFlights, skylineFleet.get(1)));4
+//        flights.add(new Cargo("OA303", cairoAirport, jfk, LocalDateTime.of(2024, 5, 5, 18, 0), LocalDateTime.of(2024, 5, 5, 18, 20), LocalDateTime.of(2024, 5, 6, 3, 0), LocalDateTime.of(2024, 5, 6, 3, 30), oceanicAirlines, oceanicFleet.get(0)));5
+//        flights.add(new Cargo("GA404", sydneyAirport, charlesDeGaulle, LocalDateTime.of(2024, 6, 10, 13, 0), LocalDateTime.of(2024, 6, 10, 13, 10), LocalDateTime.of(2024, 6, 11, 7, 0), LocalDateTime.of(2024, 6, 11, 7, 15), globalAirways, globalFleet.get(1)));2
+//        flights.add(new PrivateFlight("SF505", narita, cairoAirport, LocalDateTime.of(2024, 7, 15, 21, 0), LocalDateTime.of(2024, 7, 15, 21, 15), LocalDateTime.of(2024, 7, 16, 5, 0), LocalDateTime.of(2024, 7, 16, 5, 25), skylineFlights, skylineFleet.get(0)));3
 //
 //        flightCatalog.setFlights(flights);
 //        airportCatalog.setAirports(airports);
