@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Airline (
 );
 
 -- Create the 'Flight' table
-CREATE TABLE IF NOT EXISTS Flight (
+CREATE TABLE IF NOT EXISTS Flight_temp (
     flight_id INTEGER PRIMARY KEY AUTOINCREMENT,
     source INT NOT NULL,
     destination INT NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS Flight (
     scheduledArr DATETIME,
     estimatedArr DATETIME,
     type VARCHAR(255),
-    airline_id INT NOT NULL,
+    airline_id INT,
     aircraft_id INTEGER,
     FOREIGN KEY (source) REFERENCES Airport(airport_id),
     FOREIGN KEY (destination) REFERENCES Airport(airport_id),

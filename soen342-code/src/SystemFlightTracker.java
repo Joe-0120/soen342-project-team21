@@ -1,9 +1,11 @@
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -252,19 +254,54 @@ public class SystemFlightTracker {
                 }
 
                 if (sourceAirport != null && destinationAirport != null && airline != null && aircraft != null) {
-                    Flight flight = new Commercial(
-                            rsFlights.getInt("flight_id"),
-                            rsFlights.getString("number"),
-                            sourceAirport,
-                            destinationAirport,
-                            rsFlights.getTimestamp("scheduledDep").toLocalDateTime(),
-                            rsFlights.getTimestamp("actualDep").toLocalDateTime(),
-                            rsFlights.getTimestamp("scheduledArr").toLocalDateTime(),
-                            rsFlights.getTimestamp("estimatedArr").toLocalDateTime(),
-                            airline,
-                            aircraft
-                    );
-                    flights.add(flight);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                    switch (rsFlights.getString("type")) {
+                      case "Commercial":
+                        Flight commercialFlight = new Commercial(
+                          rsFlights.getInt("flight_id"),
+                          rsFlights.getString("number"),
+                          sourceAirport,
+                          destinationAirport,
+                          LocalDateTime.parse(rsFlights.getString("scheduledDep"), formatter),
+                          LocalDateTime.parse(rsFlights.getString("actualDep"), formatter),
+                          LocalDateTime.parse(rsFlights.getString("scheduledArr"), formatter),
+                          LocalDateTime.parse(rsFlights.getString("estimatedArr"), formatter),
+                          airline,
+                          aircraft
+                        );
+                        flights.add(commercialFlight);
+                        break;
+                      case "Cargo":
+                        Flight cargoFlight = new Cargo(
+                          rsFlights.getInt("flight_id"),
+                          rsFlights.getString("number"),
+                          sourceAirport,
+                          destinationAirport,
+                          LocalDateTime.parse(rsFlights.getString("scheduledDep"), formatter),
+                          LocalDateTime.parse(rsFlights.getString("actualDep"), formatter),
+                          LocalDateTime.parse(rsFlights.getString("scheduledArr"), formatter),
+                          LocalDateTime.parse(rsFlights.getString("estimatedArr"), formatter),
+                          airline,
+                          aircraft
+                        );
+                        flights.add(cargoFlight);
+                        break;
+                      case "Private":
+                        Flight privateFlight = new PrivateFlight(
+                          rsFlights.getInt("flight_id"),
+                          rsFlights.getString("number"),
+                          sourceAirport,
+                          destinationAirport,
+                          LocalDateTime.parse(rsFlights.getString("scheduledDep"), formatter),
+                          LocalDateTime.parse(rsFlights.getString("actualDep"), formatter),
+                          LocalDateTime.parse(rsFlights.getString("scheduledArr"), formatter),
+                          LocalDateTime.parse(rsFlights.getString("estimatedArr"), formatter),
+                          null,
+                          aircraft
+                        );
+                        flights.add(privateFlight);
+                        break;
+                    }
                 }
             }
         }
@@ -402,14 +439,42 @@ public class SystemFlightTracker {
         return LocalDateTime.of(year, month, dayOfMonth, hour, minute);
     }
 
+    public static void insertFlightTest() {
+      String insertSql = "INSERT INTO Flight (source, destination, number, scheduledDep, actualDep, scheduledArr, estimatedArr, type, airline_id, aircraft_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING *;";
+      try (Connection conn = DriverManager.getConnection("jdbc:sqlite:FlightTracker.db")) {
+        try (PreparedStatement pstmt = conn.prepareStatement(insertSql)) {
+          // Assuming you have values for these parameters
+          pstmt.setInt(1, 1); // Replace sourceId with the actual source ID
+          pstmt.setInt(2, 2); // Replace destinationId with the actual destination ID
+          pstmt.setString(3, "CACA777"); // Flight number example
+          pstmt.setString(4, "2023-10-01 08:00"); // Scheduled departure
+          pstmt.setString(5, "2023-10-01 08:10"); // Actual departure
+          pstmt.setString(6, "2023-10-01 12:00"); // Scheduled arrival
+          pstmt.setString(7, "2023-10-01 11:50"); // Estimated arrival
+          pstmt.setString(8, "Domestic"); // Type
+          pstmt.setInt(9, 3); // Airline ID
+          pstmt.setInt(10, 5); // Aircraft ID
+
+          try (ResultSet rs = pstmt.executeQuery()) {
+              if (rs.next()) {
+                  // Output the inserted row or specific columns as needed
+                  System.out.println("Inserted Flight ID: " + rs.getInt("flight_id"));
+              }
+          }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+      } catch (SQLException e) {
+          System.out.println(e.getMessage());
+      }
+    }
+
     public static void main(String[] args) {
       System.out.println("Working Directory = " + System.getProperty("user.dir"));
-
-       // Path to the SQLite database file
-       String url = "jdbc:sqlite:FlightTracker.db";
+      // insertFlightTest();
 
        // Connect to the database
-       try (Connection conn = DriverManager.getConnection(url)) {
+       try (Connection conn = DriverManager.getConnection("jdbc:sqlite:FlightTracker.db")) {
            System.out.println("Connection to SQLite has been established.");
            loadDataDB(conn);
 //           // Create a statement object to perform a query
