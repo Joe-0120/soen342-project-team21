@@ -1,15 +1,22 @@
 public class Aircraft {
     private String name;
     private String status;
-    private String id;
+    private int id;
     private Airline airline;
 
-    public Aircraft(String name, String status, String id, Airline airline) {
+    public Aircraft(int id, String name, String status, Airline airline) {
         this.name = name;
         this.status = status;
         this.id = id;
         this.airline = airline;
     }
+    public Aircraft(int id, String name, String status) {
+        this.name = name;
+        this.status = status;
+        this.id = id;
+        this.airline = airline;
+    }
+
 
     @Override
     public String toString() {
@@ -35,11 +42,11 @@ public class Aircraft {
         this.status = status;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

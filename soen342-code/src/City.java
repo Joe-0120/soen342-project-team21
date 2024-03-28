@@ -1,22 +1,32 @@
 import java.util.ArrayList;
 
 public class City {
+    private int id;
     private String name;
     private String country;
     private double temperature;
     private ArrayList<Airport> airport = new ArrayList<Airport>();
 
-    public City(String name, String country, double temperature) {
+    public City(int id, String name, String country, double temperature) {
+        this.id = id;
         this.name = name;
         this.country = country;
         this.temperature = temperature;
     }
 
     public String toString(){
-        return name + ", " + country + ", " + temperature + "°C";
+        return name + ", " + country + ", " + temperature + "C";
     }
     public String getName() {
         return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {

@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 
 public class Airline {
+    private int id;
     private String name;
     private ArrayList<Aircraft> fleet = new ArrayList<>();
 
-    public Airline(String name) {
+    public Airline(int id, String name) {
         this.name = name;
+        this.id = id;
     }
 
     @Override
@@ -13,6 +15,14 @@ public class Airline {
         return "Airline{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -29,6 +39,10 @@ public class Airline {
 
     public void setFleet(ArrayList<Aircraft> fleet) {
         this.fleet = fleet;
+    }
+
+    public void addAircraft(Aircraft aircraft){
+        this.fleet.add(aircraft);
     }
 
     public Aircraft getAircraft(Airport source){

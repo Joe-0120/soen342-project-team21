@@ -120,77 +120,133 @@ public class SystemFlightTracker {
             System.out.println("Aircraft: " + flight.getAircraft());
         }
     }
-
-    public static void loadData() {
-        // Create Airlines
-        Airline globalAirways = new Airline("Global Airways");
-        Airline skylineFlights = new Airline("Skyline Flights");
-        Airline oceanicAirlines = new Airline("Oceanic Airlines");
-
-        ArrayList<Aircraft> globalFleet = new ArrayList<>();
-        ArrayList<Aircraft> skylineFleet = new ArrayList<>();
-        ArrayList<Aircraft> oceanicFleet = new ArrayList<>();
-
-        // Create Aircraft and assign to airlines
-        globalFleet.add(new Aircraft("Glider One", "JFK", "A1", globalAirways));
-        globalFleet.add(new Aircraft("Sky Cruiser", "JFK", "A2", globalAirways));
-        globalAirways.setFleet(globalFleet);
-
-        skylineFleet.add(new Aircraft("Jet Streamer", "Maintenance", "S1", skylineFlights));
-        skylineFleet.add(new Aircraft("Cloud Hopper", "SYD", "S2", skylineFlights));
-        skylineFlights.setFleet(skylineFleet);
-
-        oceanicFleet.add(new Aircraft("Sea Breeze", "NRT", "O1", oceanicAirlines));
-        oceanicAirlines.setFleet(oceanicFleet);
-
-        airlineCatalog = new AirlineCatalog();
-        ArrayList<Airline> airlines = new ArrayList<>();
-        airlines.add(globalAirways);
-        airlines.add(skylineFlights);
-        airlines.add(oceanicAirlines);
-        airlineCatalog.setAirlines(airlines);
-
-        airportCatalog = new AirportCatalog();
-        ArrayList<Airport> airports = new ArrayList<>();
+    public static void loadDataDB(Connection conn) throws SQLException{
+        systemAdministrators.add(new SystemAdministrator("John", "Doe", 0));
 
         cityCatalog = new CityCatalog();
         ArrayList<City> cities = new ArrayList<>();
-        City newYork = new City("New York", "USA", 16.0);
-        City tokyo = new City("Tokyo", "Japan", 20.0);
-        City paris = new City("Paris", "France", 18.0);
-        City sydney = new City("Sydney", "Australia", 22.0);
-        City cairo = new City("Cairo", "Egypt", 30.0);
-        cities.add(newYork);
-        cities.add(tokyo);
-        cities.add(paris);
-        cities.add(sydney);
-        cities.add(cairo);
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery("SELECT * FROM City");
+            while (rs.next()) {
+                City city = new City(
+                        rs.getInt("city_id"),
+                        rs.getString("name"),
+                        rs.getString("country"),
+                        rs.getDouble("temp")
+                );
+                cities.add(city);
+                System.out.println(city.getTemperature());
+            }
+        }
         cityCatalog.setCities(cities);
+        System.out.println(cityCatalog.getCities());
+        airlineCatalog = new AirlineCatalog();
+        ArrayList<Airline> airlines = new ArrayList<>();
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Airline");
+            while (rs.next()) {
+                Airline airline = new Airline(
+                        rs.getInt("airline_id"),
+                        rs.getString("name")
+                );
+                airlines.add(airline);
+            }
+        }
+        airlineCatalog.setAirlines(airlines);
+        System.out.println(airlineCatalog.getAirlines());
+        // Fetch aircrafts and add them to the respective airline's fleet
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet rsAircrafts = stmt.executeQuery("SELECT * FROM Aircraft");
+            while (rsAircrafts.next()) {
+                Aircraft aircraft = new Aircraft(
+                        rsAircrafts.getInt("aircraft_id"),
+                        rsAircrafts.getString("name"),
+                        rsAircrafts.getString("status")
+                );
+                int airlineId = rsAircrafts.getInt("airline_id");
+                for (Airline airline : airlineCatalog.getAirlines()) {
+                    if (airline.getId() == airlineId) {
+                        airline.getFleet().add(aircraft);
+                        aircraft.setAirline(airline); // Set the airline reference in the aircraft
+                        break;
+                    }
+                }
+            }
+            for (Airline airline: airlineCatalog.getAirlines()){
+                System.out.println(airline);
+                System.out.println(airline.getFleet());
+            }
+        }
 
-        Airport jfk = new Airport("John F. Kennedy International Airport", "JFK", newYork);
-        Airport narita = new Airport("Narita International Airport", "NRT", tokyo);
-        Airport charlesDeGaulle = new Airport("Charles de Gaulle Airport", "CDG", paris);
-        Airport sydneyAirport = new Airport("Sydney Airport", "SYD", sydney);
-        Airport cairoAirport = new Airport("Cairo International Airport", "CAI", cairo);
-
-        airports.add(jfk);
-        airports.add(narita);
-        airports.add(charlesDeGaulle);
-        airports.add(sydneyAirport);
-        airports.add(cairoAirport);
-        systemAdministrators.add(new SystemAdministrator("John", "Doe", 0));
-
-        flightCatalog = new FlightCatalog();
-        ArrayList<Flight> flights = new ArrayList<>();
-        flights.add(new Commercial("GA101", jfk, narita, LocalDateTime.of(2024, 3, 14, 10, 0), LocalDateTime.of(2024, 3, 14, 10, 15), LocalDateTime.of(2024, 3, 15, 12, 0), LocalDateTime.of(2024, 3, 15, 12, 20), globalAirways, globalFleet.get(0)));
-        flights.add(new Commercial("SF202", charlesDeGaulle, sydneyAirport, LocalDateTime.of(2024, 4, 20, 9, 0), LocalDateTime.of(2024, 4, 20, 9, 30), LocalDateTime.of(2024, 4, 21, 22, 0), LocalDateTime.of(2024, 4, 21, 22, 45), skylineFlights, skylineFleet.get(1)));
-        flights.add(new Cargo("OA303", cairoAirport, jfk, LocalDateTime.of(2024, 5, 5, 18, 0), LocalDateTime.of(2024, 5, 5, 18, 20), LocalDateTime.of(2024, 5, 6, 3, 0), LocalDateTime.of(2024, 5, 6, 3, 30), oceanicAirlines, oceanicFleet.get(0)));
-        flights.add(new Cargo("GA404", sydneyAirport, charlesDeGaulle, LocalDateTime.of(2024, 6, 10, 13, 0), LocalDateTime.of(2024, 6, 10, 13, 10), LocalDateTime.of(2024, 6, 11, 7, 0), LocalDateTime.of(2024, 6, 11, 7, 15), globalAirways, globalFleet.get(1)));
-        flights.add(new PrivateFlight("SF505", narita, cairoAirport, LocalDateTime.of(2024, 7, 15, 21, 0), LocalDateTime.of(2024, 7, 15, 21, 15), LocalDateTime.of(2024, 7, 16, 5, 0), LocalDateTime.of(2024, 7, 16, 5, 25), skylineFlights, skylineFleet.get(0)));
-
-        flightCatalog.setFlights(flights);
-        airportCatalog.setAirports(airports);
     }
+//    public static void loadData(){
+//        cityCatalog = new CityCatalog();
+//        ArrayList<City> cities = new ArrayList<>();
+//        City newYork = new City(1,"New York", "USA", 16.0);
+//        City tokyo = new City(2,"Tokyo", "Japan", 20.0);
+//        City paris = new City(3,"Paris", "France", 18.0);
+//        City sydney = new City(4,"Sydney", "Australia", 22.0);
+//        City cairo = new City(5,"Cairo", "Egypt", 30.0);
+//        cities.add(newYork);
+//        cities.add(tokyo);
+//        cities.add(paris);
+//        cities.add(sydney);
+//        cities.add(cairo);
+//        cityCatalog.setCities(cities);
+//        // Create Airlines
+//        Airline globalAirways = new Airline("Global Airways");
+//        Airline skylineFlights = new Airline("Skyline Flights");
+//        Airline oceanicAirlines = new Airline("Oceanic Airlines");
+//
+//        ArrayList<Aircraft> globalFleet = new ArrayList<>();
+//        ArrayList<Aircraft> skylineFleet = new ArrayList<>();
+//        ArrayList<Aircraft> oceanicFleet = new ArrayList<>();
+//
+//        // Create Aircraft and assign to airlines
+//        globalFleet.add(new Aircraft("Glider One", "JFK", "A1", globalAirways));
+//        globalFleet.add(new Aircraft("Sky Cruiser", "JFK", "A2", globalAirways));
+//        globalAirways.setFleet(globalFleet);
+//
+//        skylineFleet.add(new Aircraft("Jet Streamer", "Maintenance", "S1", skylineFlights));
+//        skylineFleet.add(new Aircraft("Cloud Hopper", "SYD", "S2", skylineFlights));
+//        skylineFlights.setFleet(skylineFleet);
+//
+//        oceanicFleet.add(new Aircraft("Sea Breeze", "NRT", "O1", oceanicAirlines));
+//        oceanicAirlines.setFleet(oceanicFleet);
+//
+//        airlineCatalog = new AirlineCatalog();
+//        ArrayList<Airline> airlines = new ArrayList<>();
+//        airlines.add(globalAirways);
+//        airlines.add(skylineFlights);
+//        airlines.add(oceanicAirlines);
+//        airlineCatalog.setAirlines(airlines);
+//
+//        airportCatalog = new AirportCatalog();
+//        ArrayList<Airport> airports = new ArrayList<>();
+//        Airport jfk = new Airport("John F. Kennedy International Airport", "JFK", newYork);
+//        Airport narita = new Airport("Narita International Airport", "NRT", tokyo);
+//        Airport charlesDeGaulle = new Airport("Charles de Gaulle Airport", "CDG", paris);
+//        Airport sydneyAirport = new Airport("Sydney Airport", "SYD", sydney);
+//        Airport cairoAirport = new Airport("Cairo International Airport", "CAI", cairo);
+//        airports.add(jfk);
+//        airports.add(narita);
+//        airports.add(charlesDeGaulle);
+//        airports.add(sydneyAirport);
+//        airports.add(cairoAirport);
+
+//        systemAdministrators.add(new SystemAdministrator("John", "Doe", 0));
+//
+//        flightCatalog = new FlightCatalog();
+//        ArrayList<Flight> flights = new ArrayList<>();
+//        flights.add(new Commercial("GA101", jfk, narita, LocalDateTime.of(2024, 3, 14, 10, 0), LocalDateTime.of(2024, 3, 14, 10, 15), LocalDateTime.of(2024, 3, 15, 12, 0), LocalDateTime.of(2024, 3, 15, 12, 20), globalAirways, globalFleet.get(0)));
+//        flights.add(new Commercial("SF202", charlesDeGaulle, sydneyAirport, LocalDateTime.of(2024, 4, 20, 9, 0), LocalDateTime.of(2024, 4, 20, 9, 30), LocalDateTime.of(2024, 4, 21, 22, 0), LocalDateTime.of(2024, 4, 21, 22, 45), skylineFlights, skylineFleet.get(1)));
+//        flights.add(new Cargo("OA303", cairoAirport, jfk, LocalDateTime.of(2024, 5, 5, 18, 0), LocalDateTime.of(2024, 5, 5, 18, 20), LocalDateTime.of(2024, 5, 6, 3, 0), LocalDateTime.of(2024, 5, 6, 3, 30), oceanicAirlines, oceanicFleet.get(0)));
+//        flights.add(new Cargo("GA404", sydneyAirport, charlesDeGaulle, LocalDateTime.of(2024, 6, 10, 13, 0), LocalDateTime.of(2024, 6, 10, 13, 10), LocalDateTime.of(2024, 6, 11, 7, 0), LocalDateTime.of(2024, 6, 11, 7, 15), globalAirways, globalFleet.get(1)));
+//        flights.add(new PrivateFlight("SF505", narita, cairoAirport, LocalDateTime.of(2024, 7, 15, 21, 0), LocalDateTime.of(2024, 7, 15, 21, 15), LocalDateTime.of(2024, 7, 16, 5, 0), LocalDateTime.of(2024, 7, 16, 5, 25), skylineFlights, skylineFleet.get(0)));
+//
+//        flightCatalog.setFlights(flights);
+//        airportCatalog.setAirports(airports);
+//    }
 
     public static void registerFlight(String number, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr, Airline airline) {
         if (!flightCatalog.checkDepUnique(source, scheduledDep)){
@@ -256,23 +312,23 @@ public class SystemFlightTracker {
        // Connect to the database
        try (Connection conn = DriverManager.getConnection(url)) {
            System.out.println("Connection to SQLite has been established.");
+           loadDataDB(conn);
+//           // Create a statement object to perform a query
+//           try (Statement stmt = conn.createStatement()) {
+//               // Example query
+//               ResultSet rs = stmt.executeQuery("SELECT * FROM City");
+//
+//               // Iterate over the result set
+//               while (rs.next()) {
+//                   // Replace 'columnName' with your actual column names
+//                   System.out.println(rs.getString("name"));
+//               }
+//           }
 
-           // Create a statement object to perform a query
-           try (Statement stmt = conn.createStatement()) {
-               // Example query
-               ResultSet rs = stmt.executeQuery("SELECT * FROM City");
-
-               // Iterate over the result set
-               while (rs.next()) {
-                   // Replace 'columnName' with your actual column names
-                   System.out.println(rs.getString("name"));
-               }
-           }
        } catch (SQLException e) {
            System.out.println(e.getMessage());
        }
-
-        loadData();
+        // loadData();
         System.out.println("-----------------------------------------------------------");
         System.out.println(" ----------------         Welcome         ----------------");
         System.out.println("-----------------------------------------------------------");
