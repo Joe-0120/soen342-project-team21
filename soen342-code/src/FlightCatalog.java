@@ -20,14 +20,13 @@ public class FlightCatalog {
         return flights;
     }
 
-
-    public String addFlight(String type, String flightNumber, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr, Airline airline, Aircraft aircraft) {
+    public int insertFlightDB(String type, String flightNumber, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr, Airline airline, Aircraft aircraft){
         String insertSql = "INSERT INTO Flight (source, destination, number, scheduledDep, actualDep, scheduledArr, estimatedArr, type, airline_id, aircraft_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING *;";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    
+
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:FlightTracker.db");
              PreparedStatement pstmt = conn.prepareStatement(insertSql)) {
-            
+
             pstmt.setInt(1, source.getId());
             pstmt.setInt(2, destination.getId());
             pstmt.setString(3, flightNumber);
@@ -38,46 +37,52 @@ public class FlightCatalog {
             // Assuming estimated arrival is the same as scheduled for this example
             pstmt.setString(7, scheduledArr.format(formatter));  // Format LocalDateTime
             pstmt.setString(8, type);
-            pstmt.setInt(9, airline.getId());
-            pstmt.setInt(10, aircraft.getId());
-    
+            if (airline != null)
+                pstmt.setInt(9, airline.getId());
+            if (aircraft != null)
+                pstmt.setInt(10, aircraft.getId());
+
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     System.out.println("Inserted Flight ID: " + rs.getInt("flight_id"));
-                    switch (type) {
-                      case "Commercial":
-                        flights.add(new Commercial(rs.getInt("flight_id"), flightNumber, source, destination, scheduledDep, null, scheduledArr, null, airline, aircraft));
-                        break;
-                      case "Cargo":
-                        flights.add(new Cargo(rs.getInt("flight_id"), flightNumber, source, destination, scheduledDep, null, scheduledArr, null, airline, aircraft));
-                        break;
-                    }
-                    // Return or handle the new flight information as needed
+                    return rs.getInt("flight_id");
                 }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return "Error inserting flight";
         }
-    
+        return -1;
+    }
+    public String addFlight(String type, String flightNumber, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr, Airline airline, Aircraft aircraft) {
+        int id = insertFlightDB(type, flightNumber, source, destination, scheduledDep, scheduledArr, airline, aircraft);
+        if (id == -1) return "Error inserting flight";
+        switch (type) {
+            case "Commercial":
+                flights.add(new Commercial(id, flightNumber, source, destination, scheduledDep, null, scheduledArr, null, airline, aircraft));
+                break;
+            case "Cargo":
+                flights.add(new Cargo(id, flightNumber, source, destination, scheduledDep, null, scheduledArr, null, airline, aircraft));
+                break;
+        }
         return "Flight inserted successfully";
     }
     
 
     // Normal Flight
-    public String addFlight(int id, String flightNumber, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr, Airline airline) {
-      System.out.println("Adding Flight: " + flightNumber);
-      // Add Flight -> DB
-      // DB returns id
-      // new instance of Flight
-      flights.add(new Commercial(id, flightNumber, source, destination, scheduledDep, null, scheduledArr, null, null, null));
-      System.out.println(flights);
-      return "Flight added";
-    }
+//    public String addFlight(int id, String flightNumber, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr, Airline airline) {
+//      System.out.println("Adding Flight: " + flightNumber);
+//      // Add Flight -> DB
+//      // DB returns id
+//      // new instance of Flight
+//      flights.add(new Commercial(id, flightNumber, source, destination, scheduledDep, null, scheduledArr, null, null, null));
+//      System.out.println(flights);
+//      return "Flight added";
+//    }
 
     // Private flight
-    public String addFlight(int id, String flightNumber, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr) {
-      System.out.println("Adding Flight: " + flightNumber);
+    public String addFlight(String flightNumber, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr) {
+      int id = insertFlightDB("Private", flightNumber, source, destination, scheduledDep, scheduledArr, null, null);
+      if (id == -1) return "Error inserting flight";
       flights.add(new PrivateFlight(id, flightNumber, source, destination, scheduledDep, null, scheduledArr, null, null, null));
       System.out.println(flights);
       return "Private Flight added";

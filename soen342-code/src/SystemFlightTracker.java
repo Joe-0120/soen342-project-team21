@@ -384,7 +384,7 @@ public class SystemFlightTracker {
 //        airportCatalog.setAirports(airports);
 //    }
 
-    public static void registerFlight(String number, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr, Airline airline) {
+    public static void registerFlight(String type, String number, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr, Airline airline) {
         if (!flightCatalog.checkDepUnique(source, scheduledDep)){
             System.out.println("Error: Departure time taken by other flight at the source airport.");
             return;
@@ -399,11 +399,11 @@ public class SystemFlightTracker {
                 System.out.println("Error: No available aircrafts from fleet in the source airport");
                 return;
             }
-            String confirmation = flightCatalog.addFlight(flightCatalog.getFlights().size(), number, source, destination, scheduledDep, scheduledArr, airline);
+            String confirmation = flightCatalog.addFlight(type, number, source, destination, scheduledDep, scheduledArr, airline, aircraft);
             System.out.println(confirmation);
         }
         else if(user.getUserType().equals("airportAdmin")){
-            String confirmation = flightCatalog.addFlight(flightCatalog.getFlights().size(), number, source, destination, scheduledDep, scheduledArr);
+            String confirmation = flightCatalog.addFlight(number, source, destination, scheduledDep, scheduledArr);
             System.out.println(confirmation);
         }
 
@@ -555,6 +555,13 @@ public class SystemFlightTracker {
                 ans = ans.toLowerCase();
             } while (!ans.equals("y") && !ans.equals("n"));
             if (ans.equals("y")){
+                String type = null;
+                if (user.getUserType().equals("airlineAdmin")){
+                    do {
+                        System.out.println("Enter the type of the flight (Cargo/Commercial)");
+                        type = scanner.nextLine();
+                    } while (!type.equals("Cargo") && !type.equals("Commercial"));
+                }
                 System.out.print("Enter the number of the flight: ");
                 String number = scanner.nextLine();
                 System.out.print("Enter source airport code: ");
@@ -571,7 +578,8 @@ public class SystemFlightTracker {
                 if (user.getUserType().equals("airlineAdmin")){
                     airline = ((AirlineAdministrator)user).getAirline();
                 }
-                registerFlight(number, sourceAirport, destinationAirport, depTime, arrTime, airline);
+
+                registerFlight(type, number, sourceAirport, destinationAirport, depTime, arrTime, airline);
 
             }
         }
