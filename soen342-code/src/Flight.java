@@ -1,6 +1,7 @@
 import java.time.LocalDateTime;
 
 public abstract class Flight {
+  private int id;
   private String number;
   private Airport source;
   private Airport destination;
@@ -11,7 +12,7 @@ public abstract class Flight {
   private Airline airline;
   private Aircraft aircraft;
 
-  public Flight(
+  public Flight(int id,
     String number,
     Airport source,
     Airport destination,
@@ -22,6 +23,7 @@ public abstract class Flight {
     Airline airline,
     Aircraft aircraft
   ) {
+    this.id = id;
     this.number = number;
     this.source = source;
     this.destination = destination;

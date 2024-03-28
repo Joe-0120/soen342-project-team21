@@ -9,19 +9,25 @@ public class FlightCatalog {
     public FlightCatalog() {
     }
 
+    public ArrayList<Flight> getFlights() {
+        return flights;
+    }
+
+
+
     // Normal Flight
-    public String addFlight(String flightNumber, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr, Airline airline) {
+    public String addFlight(int id, String flightNumber, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr, Airline airline) {
       System.out.println("Adding Flight: " + flightNumber);
       // Add switch for Commercial or Cargo
-      flights.add(new Commercial(flightNumber, source, destination, scheduledDep, null, scheduledArr, null, null, null));
+      flights.add(new Commercial(id, flightNumber, source, destination, scheduledDep, null, scheduledArr, null, null, null));
       System.out.println(flights);
       return "Flight added";
     }
 
     // Private flight
-    public String addFlight(String flightNumber, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr) {
+    public String addFlight(int id, String flightNumber, Airport source, Airport destination, LocalDateTime scheduledDep, LocalDateTime scheduledArr) {
       System.out.println("Adding Flight: " + flightNumber);
-      flights.add(new PrivateFlight(flightNumber, source, destination, scheduledDep, null, scheduledArr, null, null, null));
+      flights.add(new PrivateFlight(id, flightNumber, source, destination, scheduledDep, null, scheduledArr, null, null, null));
       System.out.println(flights);
       return "Private Flight added";
     }

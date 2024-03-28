@@ -2,6 +2,7 @@ import java.time.LocalDateTime;
 
 public class Commercial extends NonPrivateFlight {
   public Commercial(
+          int id,
     String number,
     Airport source,
     Airport destination,
@@ -12,6 +13,6 @@ public class Commercial extends NonPrivateFlight {
     Airline airline,
     Aircraft aircraft
   ) {
-    super(number, source, destination, scheduledDep, actualDep, scheduledArr, estimatedArr, airline, aircraft);
+    super(id, number, source, destination, scheduledDep, actualDep, scheduledArr, estimatedArr, airline, aircraft);
   }
 }

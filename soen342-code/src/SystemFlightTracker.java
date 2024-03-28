@@ -213,6 +213,70 @@ public class SystemFlightTracker {
             }
         }
 
+        // Fetch flights and associate them with airports, airlines, and aircraft
+        ArrayList<Flight> flights = new ArrayList<>();
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet rsFlights = stmt.executeQuery("SELECT * FROM Flight");
+            while (rsFlights.next()) {
+                int sourceAirportId = rsFlights.getInt("source");
+                int destinationAirportId = rsFlights.getInt("destination");
+                int airlineId = rsFlights.getInt("airline_id");
+                int aircraftId = rsFlights.getInt("aircraft_id");
+
+                // Find source and destination airports, airline, and aircraft
+                Airport sourceAirport = null;
+                Airport destinationAirport = null;
+                Airline airline = null;
+                Aircraft aircraft = null;
+
+                for (Airport airport : airportCatalog.getAirports()) {
+                    if (airport.getId() == sourceAirportId) {
+                        sourceAirport = airport;
+                    } else if (airport.getId() == destinationAirportId) {
+                        destinationAirport = airport;
+                    }
+                }
+
+                for (Airline a : airlineCatalog.getAirlines()) {
+                    if (a.getId() == airlineId) {
+                        airline = a;
+                    }
+                }
+
+                if (airline != null){
+                    for (Aircraft a : airline.getFleet()) {
+                        if (a.getId() == aircraftId) {
+                            aircraft = a;
+                        }
+                    }
+                }
+
+                if (sourceAirport != null && destinationAirport != null && airline != null && aircraft != null) {
+                    Flight flight = new Commercial(
+                            rsFlights.getInt("flight_id"),
+                            rsFlights.getString("number"),
+                            sourceAirport,
+                            destinationAirport,
+                            rsFlights.getTimestamp("scheduledDep").toLocalDateTime(),
+                            rsFlights.getTimestamp("actualDep").toLocalDateTime(),
+                            rsFlights.getTimestamp("scheduledArr").toLocalDateTime(),
+                            rsFlights.getTimestamp("estimatedArr").toLocalDateTime(),
+                            airline,
+                            aircraft
+                    );
+                    flights.add(flight);
+                }
+            }
+        }
+
+        // Now you have populated flights associated with airports, airlines, and aircraft
+        // You can set the flights in the flightCatalog
+        flightCatalog = new FlightCatalog();
+        flightCatalog.setFlights(flights);
+        for (Flight flight: flightCatalog.getFlights()){
+            System.out.println(flight);
+        }
+
     }
 //    public static void loadData(){
 //        cityCatalog = new CityCatalog();
@@ -298,11 +362,11 @@ public class SystemFlightTracker {
                 System.out.println("Error: No available aircrafts from fleet in the source airport");
                 return;
             }
-            String confirmation = flightCatalog.addFlight(number, source, destination, scheduledDep, scheduledArr, airline);
+            String confirmation = flightCatalog.addFlight(flightCatalog.getFlights().size(), number, source, destination, scheduledDep, scheduledArr, airline);
             System.out.println(confirmation);
         }
         else if(user.getUserType().equals("airportAdmin")){
-            String confirmation = flightCatalog.addFlight(number, source, destination, scheduledDep, scheduledArr);
+            String confirmation = flightCatalog.addFlight(flightCatalog.getFlights().size(), number, source, destination, scheduledDep, scheduledArr);
             System.out.println(confirmation);
         }
 
