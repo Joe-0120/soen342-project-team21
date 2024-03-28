@@ -123,6 +123,7 @@ public class SystemFlightTracker {
     public static void loadDataDB(Connection conn) throws SQLException{
         systemAdministrators.add(new SystemAdministrator("John", "Doe", 0));
 
+        // Fetching cities
         cityCatalog = new CityCatalog();
         ArrayList<City> cities = new ArrayList<>();
         try (Statement stmt = conn.createStatement()) {
@@ -140,6 +141,8 @@ public class SystemFlightTracker {
         }
         cityCatalog.setCities(cities);
         System.out.println(cityCatalog.getCities());
+
+        // Fetching airlines
         airlineCatalog = new AirlineCatalog();
         ArrayList<Airline> airlines = new ArrayList<>();
         try (Statement stmt = conn.createStatement()) {
@@ -154,6 +157,7 @@ public class SystemFlightTracker {
         }
         airlineCatalog.setAirlines(airlines);
         System.out.println(airlineCatalog.getAirlines());
+
         // Fetch aircrafts and add them to the respective airline's fleet
         try (Statement stmt = conn.createStatement()) {
             ResultSet rsAircrafts = stmt.executeQuery("SELECT * FROM Aircraft");
@@ -175,6 +179,37 @@ public class SystemFlightTracker {
             for (Airline airline: airlineCatalog.getAirlines()){
                 System.out.println(airline);
                 System.out.println(airline.getFleet());
+            }
+        }
+
+        // Fetch airports
+        ArrayList<Airport> airports = new ArrayList<>();
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet rsAirports = stmt.executeQuery("SELECT * FROM Airport");
+            while (rsAirports.next()) {
+                Airport airport = new Airport(
+                        rsAirports.getInt("airport_id"),
+                        rsAirports.getString("name"),
+                        rsAirports.getString("code")
+                );
+                int cityId = rsAirports.getInt("city_id");
+                // Find the city associated with the airport
+                City city = null;
+                for (City c : cities) {
+                    if (c.getId() == cityId) {
+                        city = c;
+                        break;
+                    }
+                }
+                if (city != null) {
+                    airport.setCity(city);
+                    airports.add(airport);
+                }
+            }
+            airportCatalog = new AirportCatalog();
+            airportCatalog.setAirports(airports);
+            for (Airport airport: airportCatalog.getAirports()){
+                System.out.println(airport);
             }
         }
 
@@ -279,7 +314,7 @@ public class SystemFlightTracker {
             System.out.println("Error: City does not exist");
         }
         else {
-            airportCatalog.addAirport(name, code, city);
+            airportCatalog.addAirport(airportCatalog.getAirports().size(), name, code, city);
         }
     }
     public static LocalDateTime getTimeUser(Scanner scanner) {
