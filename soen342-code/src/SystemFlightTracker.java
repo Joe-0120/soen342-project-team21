@@ -415,7 +415,7 @@ public class SystemFlightTracker {
             System.out.println("Error: City does not exist");
         }
         else {
-            airportCatalog.addAirport(airportCatalog.getAirports().size(), name, code, city);
+            airportCatalog.addAirport(name, code, city);
         }
     }
     public static LocalDateTime getTimeUser(Scanner scanner) {
