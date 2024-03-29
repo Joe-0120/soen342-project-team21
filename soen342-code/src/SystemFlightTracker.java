@@ -103,6 +103,7 @@ public class SystemFlightTracker {
         for (Flight flight : flights) {
             System.out.println("-----------------------------------------------------------");
             System.out.println("Basic flight information for flight: " + flight.getNumber());
+            System.out.println("Flight type: " + flight.getClass().getSimpleName());
             System.out.println("Source: " + flight.getSource());
             System.out.println("Destination: " + flight.getDestination());
         }
@@ -112,6 +113,7 @@ public class SystemFlightTracker {
         for (Flight flight : flights) {
             System.out.println("-----------------------------------------------------------");
             System.out.println("Full flight information for flight: " + flight.getNumber());
+            System.out.println("Flight type: " + flight.getClass().getSimpleName());
             System.out.println("Source: " + flight.getSource());
             System.out.println("Destination: " + flight.getDestination());
             System.out.println("Scheduled departure time: " + flight.getScheduledDep());
@@ -537,14 +539,24 @@ public class SystemFlightTracker {
                 return;
         }
 
-        // Ask for source and destination airport codes
-        System.out.print("Enter source airport code: ");
-        String sourceCode = scanner.nextLine();
+        // Driver code for viewFlight
+        String ans1;
+        System.out.print("Would you like to view flights? (y/n): ");
+        do {
+            ans1 = scanner.nextLine();
+            ans1 = ans1.toLowerCase();
+        } while (!ans1.equals("y") && !ans1.equals("n"));
+        if (ans1.equals("y")){
+            // Ask for source and destination airport codes
+            System.out.print("Enter source airport code: ");
+            String sourceCode = scanner.nextLine();
 
-        System.out.print("Enter destination airport code: ");
-        String destinationCode = scanner.nextLine();
+            System.out.print("Enter destination airport code: ");
+            String destinationCode = scanner.nextLine();
 
-        viewFlights(sourceCode, destinationCode);
+            viewFlights(sourceCode, destinationCode);
+        }
+
 
         // Driver code for registerFlight
         if (user.getUserType().equals("airportAdmin") || user.getUserType().equals("airlineAdmin")){
