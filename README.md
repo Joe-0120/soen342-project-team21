@@ -22,8 +22,12 @@ To run the program, clone the repository and go to soen342-code/src
 
 Compile with: ```javac *.java```
 
-To run the program on windows: ```java -cp ".;sqlite-jdbc-3.45.2.0.jar;slf4j-api-1.7.36.jar" SystemFlightTracker```
+To run the program on windows: 
+```java -cp ".;sqlite-jdbc-3.45.2.0.jar;slf4j-api-1.7.36.jar" SystemFlightTracker```
 
-To run the program on mac/linux: ```java -cp ".:sqlite-jdbc-3.45.2.0.jar:slf4j-api-1.7.36.jar" SystemFlightTracker```
+To run the program on mac/linux: 
+```java -cp ".:sqlite-jdbc-3.45.2.0.jar:slf4j-api-1.7.36.jar" SystemFlightTracker```
 
+## Demo
+https://github.com/Joe-0120/soen342-project-team21/assets/29460203/2aeeafc1-757b-4356-81ec-508d6320bbf8
 
